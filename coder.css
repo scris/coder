@@ -1,0 +1,46 @@
+.coder {
+  width: 100%;
+  height: 100%;
+}
+
+.coder .editor {
+  height: 100%;
+  overflow: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-right: 300px;
+}
+
+.coder .literals {
+  height: 100%;
+  overflow: auto;
+  float: right;
+  width: 280px;
+}
+
+.coder .literal {
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.coder .literal:not(:first-child) {
+  margin-top: 1px;
+}
+
+.coder .red { background-color: #e53935 }
+.coder .pink { background-color:  #d81b60 }
+.coder .purple { background-color:  #8e24aa }
+.coder .indigo { background-color:  #3949ab }
+.coder .blue { background-color:  #1e88e5 }
+.coder .cyan { background-color:  #00acc1 }
+.coder .teal { background-color:  #00897b }
+.coder .green { background-color: #43a047 }
+.coder .lime { background-color:  #c0ca33 }
+.coder .yellow { background-color:  #fdd835 }
+.coder .amber { background-color: #ffb300 }
+.coder .orange { background-color:  #fb8c00 }
+.coder .brown { background-color: #6d4c41 }
+.coder .grey { background-color:  #757575 }
