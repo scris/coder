@@ -34,22 +34,38 @@ window.Coder = function (parent, config) {
     return elem;
   }
 
-  function addLiteral(literal) {
-    self.code.push(literal);
+  function addLiteral(literal, to) {
+    self.code.splice(to, 0, literal);
     var elem = createLiteral(literal, 'move');
-    self.elemEditor.appendChild(elem);
+    var predecessor = self.elemEditor.children[to];
+    self.elemEditor.insertBefore(elem, predecessor);
   }
 
-  function moveLiteral(from) {
+  function moveLiteral(from, to) {
+    if (from === to) return;
     var literal = self.code.splice(from, 1)[0];
-    self.code.push(literal);
+    self.code.splice(from < to ? to - 1 : to, 0, literal);
     var elem = self.elemEditor.children[from];
-    self.elemEditor.appendChild(elem);
+    var predecessor = self.elemEditor.children[to];
+    self.elemEditor.insertBefore(elem, predecessor);
+  }
+
+  function removeLiteral(index) {
+    self.code.splice(index, 1);
+    var elem = self.elemEditor.children[index];
+    self.elemEditor.removeChild(elem);
   }
 
   function createLiteralsArea() {
     var elem = document.createElement('div');
     elem.classList.add('literals');
+    elem.addEventListener('dragover', function (event) {
+      event.preventDefault();
+    });
+    elem.addEventListener('drop', function (event) {
+      var index = parseInt(event.dataTransfer.getData('move-literal'));
+      if (!isNaN(index)) return removeLiteral(index);
+    });
     return elem;
   }
 
@@ -60,10 +76,12 @@ window.Coder = function (parent, config) {
       event.preventDefault();
     });
     elem.addEventListener('drop', function (event) {
+      var posY = event.pageY - elem.offsetTop;
+      var to = Math.max(0, Math.floor((posY - 10) / 29));
       var index = parseInt(event.dataTransfer.getData('add-literal'));
-      if (!isNaN(index)) return addLiteral(self.config.literals[index]);
+      if (!isNaN(index)) return addLiteral(self.config.literals[index], to);
       index = parseInt(event.dataTransfer.getData('move-literal'));
-      if (!isNaN(index)) return moveLiteral(index);
+      if (!isNaN(index)) return moveLiteral(index, to);
     });
     return elem;
   }
